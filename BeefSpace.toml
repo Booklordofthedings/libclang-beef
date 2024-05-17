@@ -1,0 +1,5 @@
+FileVersion = 1
+Projects = {libclang-beef = {Path = "."}}
+
+[Workspace]
+StartupProject = "libclang-beef"
