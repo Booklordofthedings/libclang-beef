@@ -1,7 +1,9 @@
 FileVersion = 1
+Dependencies = {corlib = "*", corlib = "*"}
 
 [Project]
 Name = "libclang-beef"
+TargetType = "BeefLib"
 StartupObject = "libclang_beef.Program"
 
 [Configs.Debug.Win32]
