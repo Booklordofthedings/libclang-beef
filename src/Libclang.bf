@@ -595,6 +595,11 @@ static {
 	struct CXString{
 	  public void* data;
 	  public c_uint private_flags;
+
+		public StringView text
+		{
+			get => StringView((char8*)(void*)data);
+		}
 	} ;
 
     /**
@@ -2294,9 +2299,9 @@ static {
      * source code into the AST.
      */
     public struct CXCursor {
-        CXCursorKind kind;
-        c_int xdata;
-        void*[3] data;
+        public CXCursorKind kind;
+        public c_int xdata;
+        public void*[3] data;
     };
 
     /**
@@ -2908,7 +2913,7 @@ static {
     /**
      * Describes the kind of type
      */
-    [AllowDuplicates] enum CXTypeKind {
+    [AllowDuplicates] enum CXTypeKind : c_int {
         /**
          * Represents an invalid type (e.g., where no type is available).
          */
@@ -3103,8 +3108,8 @@ static {
      *
      */
     public struct CXType {
-        CXTypeKind kind;
-        void*[2] data;
+        public CXTypeKind kind;
+        public void*[2] data;
     };
 
     /**
@@ -3152,7 +3157,6 @@ static {
      * returned. Since this is also potentially a valid constant value, the kind of
      * the cursor must be verified before calling this function.
      */
-    [CLink]
     [CLink]
     public static extern c_longlong clang_getEnumConstantDeclValue(CXCursor C);
 
