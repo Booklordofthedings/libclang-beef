@@ -2,6 +2,7 @@ FileVersion = 1
 
 [Project]
 Name = "libclang-beef"
+TargetType = "BeefLib"
 StartupObject = "libclang_beef.Program"
 
 [Configs.Debug.Win32]

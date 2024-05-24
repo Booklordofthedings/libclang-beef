@@ -1,5 +1,11 @@
 FileVersion = 1
-Projects = {libclang-beef = {Path = "."}}
+Projects = {libclang-beef = {Path = "."}, libclang-beef = {Path = "../../Program Files/BeefLang/BeefLibs/libclang-beef"}}
 
 [Workspace]
 StartupProject = "libclang-beef"
+
+[Configs.Test.Win32]
+ConfigSelections = {libclang-beef = {Config = "Debug"}}
+
+[Configs.Test.Win64]
+ConfigSelections = {libclang-beef = {Config = "Debug"}}
