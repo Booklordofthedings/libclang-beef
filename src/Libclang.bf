@@ -57,7 +57,8 @@ static {
     public typealias CXIndex = void*;
 	public typealias CXFile = void*;
 
-	struct CXSourceLocation{
+	[CRepr]
+	struct CXSourceLocation {
 	  void*[2] ptr_data;
 	  c_uint int_data;
 	}
@@ -67,14 +68,12 @@ static {
      * An opaque type representing target information for a given translation
      * unit.
      */
-    [CRepr]
-    public struct CXTargetInfo;
+    [CRepr] public struct CXTargetInfo;
 
     /**
      * A single translation unit, which resides in an index.
      */
-    [CRepr]
-    public struct CXTranslationUnit;
+    [CRepr] public struct CXTranslationUnit;
     /**
      * Opaque pointer representing client data that will be passed through
      * to various callbacks and visitors.
@@ -113,7 +112,7 @@ static {
      * whether the use of this entity will result in a warning or error due to
      * it being deprecated or unavailable.
      */
-    public enum CXAvailabilityKind {
+    public enum CXAvailabilityKind : int32 {
         /**
          * The entity is available.
          */
@@ -163,7 +162,7 @@ static {
      *
      * A negative value indicates that the cursor is not a function declaration.
      */
-    public enum CXCursor_ExceptionSpecificationKind {
+    public enum CXCursor_ExceptionSpecificationKind : int32 {
         /**
          * The cursor has no exception specification.
          */
@@ -266,7 +265,7 @@ static {
     [CLink]
     public static extern void clang_disposeIndex(CXIndex index);
 
-    public enum CXChoice {
+    public enum CXChoice : int32 {
         /**
          * Use the default value of an option that may depend on the process
          * environment.
@@ -282,7 +281,7 @@ static {
         CXChoice_Disabled = 2
     }
 
-    public enum CXGlobalOptFlags {
+    public enum CXGlobalOptFlags : int32 {
         /**
          * Used to indicate that no special CXIndex options are needed.
          */
@@ -528,13 +527,14 @@ static {
     [CLink]
     public static extern CXSourceLocation clang_getLocationForOffset(CXTranslationUnit tu, CXFile file, c_uint offset);
 
-	struct CXSourceRange{
+
+	[CRepr] struct CXSourceRange{
 	  public void*[2] ptr_data;
 	  public c_uint begin_int_data;
 	  public c_uint end_int_data;
 	} ;
 
-	struct CXSourceRangeList{
+	[CRepr] struct CXSourceRangeList{
 	  /** The number of ranges in the \c ranges array. */
 	  public c_uint count;
 	  /**
@@ -592,7 +592,7 @@ static {
     [CLink]
     public static extern CXDiagnosticSet clang_getDiagnosticSetFromTU(CXTranslationUnit Unit);
 
-	struct CXString{
+	[CRepr] struct CXString{
 	  public void* data;
 	  public c_uint private_flags;
 
@@ -670,7 +670,7 @@ static {
     [CLink]
     public static extern CXTranslationUnit clang_createTranslationUnit(CXIndex CIdx, c_char * ast_filename);
 
-	enum  	CXErrorCode {
+	enum  	CXErrorCode : int32 {
 	  CXError_Success = 0 , CXError_Failure = 1 , CXError_Crashed = 2 , CXError_InvalidArguments = 3 ,
 	  CXError_ASTReadError = 4
 	}
@@ -693,7 +693,7 @@ static {
      * ORed together to specify which options should be used when
      * constructing the translation unit.
      */
-    enum CXTranslationUnit_Flags {
+    enum CXTranslationUnit_Flags : int32 {
         /**
          * Used to indicate that no special translation-unit options are
          * needed.
@@ -856,7 +856,6 @@ static {
      * set of optimizations enabled may change from one version to the next.
      */
     [CLink]
-    [CLink]
     public static extern c_uint clang_defaultEditingTranslationUnitOptions();
 
     /**
@@ -913,7 +912,6 @@ static {
      * \returns Zero on success, otherwise returns an error code.
      */
     [CLink]
-    [CLink]
     public static extern CXErrorCode clang_parseTranslationUnit2(CXIndex CIdx, c_char * source_filename, c_char * *command_line_args, c_int num_command_line_args, CXUnsavedFile * unsaved_files, c_uint num_unsaved_files, c_uint options, out CXTranslationUnit* out_TU);
 
     /**
@@ -921,7 +919,6 @@ static {
      * for \c command_line_args including argv[0]. This is useful if the standard
      * library paths are relative to the binary.
      */
-    [CLink]
     [CLink]
     public static extern CXErrorCode clang_parseTranslationUnit2FullArgv(CXIndex CIdx, c_char * source_filename, c_char * *command_line_args, c_int num_command_line_args, CXUnsavedFile * unsaved_files, c_uint num_unsaved_files, c_uint options, CXTranslationUnit * out_TU);
 
@@ -932,7 +929,7 @@ static {
      * ORed together to specify which options should be used when
      * saving the translation unit.
      */
-    enum CXSaveTranslationUnit_Flags {
+    enum CXSaveTranslationUnit_Flags : int32 {
         /**
          * Used to indicate that no special saving options are needed.
          */
@@ -950,14 +947,13 @@ static {
      * the most commonly-requested data.
      */
     [CLink]
-    [CLink]
     public static extern c_uint clang_defaultSaveOptions(CXTranslationUnit TU);
 
     /**
      * Describes the kind of error that occurred (if any) in a call to
      * \c clang_saveTranslationUnit().
      */
-    enum CXSaveError {
+    enum CXSaveError : int32 {
         /**
          * Indicates that no error occurred while saving a translation unit.
          */
@@ -1013,7 +1009,6 @@ static {
      * saved successfully, while a non-zero value indicates that a problem occurred.
      */
     [CLink]
-    [CLink]
     public static extern c_int clang_saveTranslationUnit(CXTranslationUnit TU, c_char * FileName, c_uint options);
 
     /**
@@ -1023,7 +1018,6 @@ static {
      * side does not support any other calls than \c clang_reparseTranslationUnit
      * to resume it or \c clang_disposeTranslationUnit to dispose it completely.
      */
-    [CLink]
     [CLink]
     public static extern c_uint clang_suspendTranslationUnit(CXTranslationUnit unit);
 
@@ -1040,7 +1034,7 @@ static {
      * ORed together to specify which options should be used when
      * reparsing the translation unit.
      */
-    enum CXReparse_Flags {
+    enum CXReparse_Flags : int32 {
         /**
          * Used to indicate that no special reparsing options are needed.
          */
@@ -1058,7 +1052,6 @@ static {
      * of reparsing. The set of optimizations enabled may change from one version
      * to the next.
      */
-    [CLink]
     [CLink]
     public static extern c_uint clang_defaultReparseOptions(CXTranslationUnit TU);
 
@@ -1102,13 +1095,12 @@ static {
      * routine are described by the \c CXErrorCode enum.
      */
     [CLink]
-    [CLink]
     public static extern int clang_reparseTranslationUnit(CXTranslationUnit TU, c_uint num_unsaved_files, CXUnsavedFile * unsaved_files, c_uint options);
 
     /**
      * Categorizes how memory is being used by a translation unit.
      */
-    [AllowDuplicates] enum CXTUResourceUsageKind {
+    [AllowDuplicates] enum CXTUResourceUsageKind : int32 {
         CXTUResourceUsage_AST = 1,
         CXTUResourceUsage_Identifiers = 2,
         CXTUResourceUsage_Selectors = 3,
@@ -1136,9 +1128,9 @@ static {
      *  the name of the memory category.  This string should never be freed.
      */
     [CLink]
-    [CLink]
     public static extern c_char* clang_getTUResourceUsageName(CXTUResourceUsageKind kind);
 
+	[CRepr]
     public struct CXTUResourceUsageEntry {
         /* The memory usage category. */
         CXTUResourceUsageKind kind;
@@ -1150,6 +1142,7 @@ static {
     /**
      * The memory usage of a CXTranslationUnit, broken into categories.
      */
+     [CRepr]
     public struct CXTUResourceUsage {
         /* Private data member, used for queries. */
         void* data;
@@ -1167,9 +1160,7 @@ static {
      *  should be released with clang_disposeCXTUResourceUsage().
      */
     [CLink]
-    [CLink]
     public static extern CXTUResourceUsage clang_getCXTUResourceUsage(CXTranslationUnit TU);
-    [CLink]
     [CLink]
     public static extern void clang_disposeCXTUResourceUsage(CXTUResourceUsage usage);
 
@@ -1179,13 +1170,11 @@ static {
      * The CXTargetInfo object cannot outlive the CXTranslationUnit object.
      */
     [CLink]
-    [CLink]
     public static extern CXTargetInfo clang_getTranslationUnitTargetInfo(CXTranslationUnit CTUnit);
 
     /**
      * Destroy the CXTargetInfo object.
      */
-    [CLink]
     [CLink]
     public static extern void clang_TargetInfo_dispose(CXTargetInfo Info);
 
@@ -1195,7 +1184,6 @@ static {
      * Returns the empty string in case of any error.
      */
     [CLink]
-    [CLink]
     public static extern CXString clang_TargetInfo_getTriple(CXTargetInfo Info);
 
     /**
@@ -1203,7 +1191,6 @@ static {
      *
      * Returns -1 in case of error.
      */
-    [CLink]
     [CLink]
     public static extern c_int clang_TargetInfo_getPointerWidth(CXTargetInfo Info);
 
@@ -1214,7 +1201,7 @@ static {
     /**
      * Describes the kind of entity that a cursor refers to.
      */
-    [AllowDuplicates] enum CXCursorKind {
+    [AllowDuplicates] enum CXCursorKind : int32 {
         /* Declarations */
         /**
          * A declaration whose specific kind is not exposed via this
@@ -2298,6 +2285,7 @@ static {
      * to the entity that resides at that location, allowing one to map from the
      * source code into the AST.
      */
+    [CRepr]
     public struct CXCursor {
         public CXCursorKind kind;
         public c_int xdata;
@@ -2314,7 +2302,6 @@ static {
      * Retrieve the NULL cursor, which represents no entity.
      */
     [CLink]
-    [CLink]
     public static extern CXCursor clang_getNullCursor();
 
     /**
@@ -2324,13 +2311,11 @@ static {
      * various declarations within the given translation unit.
      */
     [CLink]
-    [CLink]
     public static extern CXCursor clang_getTranslationUnitCursor(CXTranslationUnit unit);
 
     /**
      * Determine whether two cursors are equivalent.
      */
-    [CLink]
     [CLink]
     public static extern c_uint clang_equalCursors(CXCursor c1, CXCursor c2);
 
@@ -2338,13 +2323,11 @@ static {
      * Returns non-zero if \p cursor is null.
      */
     [CLink]
-    [CLink]
     public static extern c_int clang_Cursor_isNull(CXCursor cursor);
 
     /**
      * Compute a hash value for the given cursor.
      */
-    [CLink]
     [CLink]
     public static extern c_uint clang_hashCursor(CXCursor c);
 
@@ -2352,13 +2335,11 @@ static {
      * Retrieve the kind of the given cursor.
      */
     [CLink]
-    [CLink]
     public static extern CXCursorKind clang_getCursorKind(CXCursor c);
 
     /**
      * Determine whether the given cursor kind represents a declaration.
      */
-    [CLink]
     [CLink]
     public static extern c_uint clang_isDeclaration(CXCursorKind k);
 
@@ -2371,7 +2352,6 @@ static {
      * invalid, otherwise NULL.
      */
     [CLink]
-    [CLink]
     public static extern c_uint clang_isInvalidDeclaration(CXCursor c);
 
     /**
@@ -2383,13 +2363,11 @@ static {
      * particular cursor refers to another entity.
      */
     [CLink]
-    [CLink]
     public static extern c_uint clang_isReference(CXCursorKind k);
 
     /**
      * Determine whether the given cursor kind represents an expression.
      */
-    [CLink]
     [CLink]
     public static extern c_uint clang_isExpression(CXCursorKind k);
 
@@ -2397,20 +2375,17 @@ static {
      * Determine whether the given cursor kind represents a statement.
      */
     [CLink]
-    [CLink]
     public static extern c_uint clang_isStatement(CXCursorKind k);
 
     /**
      * Determine whether the given cursor kind represents an attribute.
      */
     [CLink]
-    [CLink]
     public static extern c_uint clang_isAttribute(CXCursorKind k);
 
     /**
      * Determine whether the given cursor has any attributes.
      */
-    [CLink]
     [CLink]
     public static extern c_uint clang_Cursor_hasAttrs(CXCursor C);
 
@@ -2419,14 +2394,12 @@ static {
      * cursor.
      */
     [CLink]
-    [CLink]
     public static extern c_uint clang_isInvalid(CXCursorKind k);
 
     /**
      * Determine whether the given cursor kind represents a translation
      * unit.
      */
-    [CLink]
     [CLink]
     public static extern c_uint clang_isTranslationUnit(CXCursorKind k);
 
@@ -2435,7 +2408,6 @@ static {
      * element, such as a preprocessor directive or macro instantiation.
      */
     [CLink]
-    [CLink]
     public static extern c_uint clang_isPreprocessing(CXCursorKind k);
 
     /***
@@ -2443,13 +2415,12 @@ static {
      *  unexposed piece of the AST (e.g., CXCursor_UnexposedStmt).
      */
     [CLink]
-    [CLink]
     public static extern c_uint clang_isUnexposed(CXCursorKind k);
 
     /**
      * Describe the linkage of the entity referred to by a cursor.
      */
-    enum CXLinkageKind {
+    enum CXLinkageKind : int32 {
         /** This value indicates that no linkage information is available
          * for a provided CXCursor. */
         CXLinkage_Invalid,
@@ -2472,10 +2443,9 @@ static {
      * Determine the linkage of the entity referred to by a given cursor.
      */
     [CLink]
-    [CLink]
     public static extern CXLinkageKind clang_getCursorLinkage(CXCursor cursor);
 
-    enum CXVisibilityKind {
+    enum CXVisibilityKind : int32 {
         /** This value indicates that no visibility information is available
          * for a provided CXCursor. */
         CXVisibility_Invalid,
@@ -2501,7 +2471,6 @@ static {
      * \returns The visibility of the cursor.
      */
     [CLink]
-    [CLink]
     public static extern CXVisibilityKind clang_getCursorVisibility(CXCursor cursor);
 
     /**
@@ -2513,13 +2482,13 @@ static {
      * \returns The availability of the cursor.
      */
     [CLink]
-    [CLink]
     public static extern CXAvailabilityKind clang_getCursorAvailability(CXCursor cursor);
 
     /**
      * Describes the availability of a given entity on a particular platform, e.g.,
      * a particular class might only be available on Mac OS 10.7 or newer.
      */
+    [CRepr]
     public struct CXPlatformAvailability {
         /**
          * A string that describes the platform for which this structure
@@ -2590,13 +2559,11 @@ static {
      * \c min(N, availability_size) such structures.
      */
     [CLink]
-    [CLink]
     public static extern c_int clang_getCursorPlatformAvailability(CXCursor cursor, c_int * always_deprecated, CXString * deprecated_message, c_int * always_unavailable, CXString * unavailable_message, CXPlatformAvailability * availability, c_int availability_size);
 
     /**
      * Free the memory associated with a \c CXPlatformAvailability structure.
      */
-    [CLink]
     [CLink]
     public static extern void clang_disposeCXPlatformAvailability(CXPlatformAvailability * availability);
 
@@ -2604,7 +2571,6 @@ static {
      * If cursor refers to a variable declaration and it has initializer returns
      * cursor referring to the initializer otherwise return null cursor.
      */
-    [CLink]
     [CLink]
     public static extern CXCursor clang_Cursor_getVarDeclInitializer(CXCursor cursor);
 
@@ -2614,7 +2580,6 @@ static {
      * returns 0. Otherwise returns -1.
      */
     [CLink]
-    [CLink]
     public static extern c_int clang_Cursor_hasVarDeclGlobalStorage(CXCursor cursor);
 
     /**
@@ -2623,19 +2588,17 @@ static {
      * external storage returns 0. Otherwise returns -1.
      */
     [CLink]
-    [CLink]
     public static extern c_int clang_Cursor_hasVarDeclExternalStorage(CXCursor cursor);
 
     /**
      * Describe the "language" of the entity referred to by a cursor.
      */
-    enum CXLanguageKind { CXLanguage_Invalid = 0, CXLanguage_C, CXLanguage_ObjC, CXLanguage_CPlusPlus }
+    enum CXLanguageKind : int32 { CXLanguage_Invalid = 0, CXLanguage_C, CXLanguage_ObjC, CXLanguage_CPlusPlus }
     ;
 
     /**
      * Determine the "language" of the entity referred to by a given cursor.
      */
-    [CLink]
     [CLink]
     public static extern CXLanguageKind clang_getCursorLanguage(CXCursor cursor);
 
@@ -2643,7 +2606,7 @@ static {
      * Describe the "thread-local storage (TLS) kind" of the declaration
      * referred to by a cursor.
      */
-    enum CXTLSKind { CXTLS_None = 0, CXTLS_Dynamic, CXTLS_Static }
+    enum CXTLSKind : int32 { CXTLS_None = 0, CXTLS_Dynamic, CXTLS_Static }
     ;
 
     /**
@@ -2651,13 +2614,11 @@ static {
      * referred to by a cursor.
      */
     [CLink]
-    [CLink]
     public static extern CXTLSKind clang_getCursorTLSKind(CXCursor cursor);
 
     /**
      * Returns the translation unit that a cursor originated from.
      */
-    [CLink]
     [CLink]
     public static extern CXTranslationUnit clang_Cursor_getTranslationUnit(CXCursor c);
 
@@ -2671,14 +2632,12 @@ static {
      * Creates an empty CXCursorSet.
      */
     [CLink]
-    [CLink]
     public static extern CXCursorSet clang_createCXCursorSet();
 
     /**
      * Disposes a CXCursorSet and releases its associated memory.
      */
 
-    [CLink]
     [CLink]
     public static extern void clang_disposeCXCursorSet(CXCursorSet cset);
 
@@ -2688,7 +2647,6 @@ static {
      * \returns non-zero if the set contains the specified cursor.
      */
     [CLink]
-    [CLink]
     public static extern c_uint clang_CXCursorSet_contains(CXCursorSet cset, CXCursor cursor);
 
     /**
@@ -2696,7 +2654,6 @@ static {
      *
      * \returns zero if the CXCursor was already in the set, and non-zero otherwise.
      */
-    [CLink]
     [CLink]
     public static extern c_uint clang_CXCursorSet_insert(CXCursorSet cset, CXCursor cursor);
 
@@ -2734,7 +2691,6 @@ static {
      * For global declarations, the semantic parent is the translation unit.
      */
     [CLink]
-    [CLink]
     public static extern CXCursor clang_getCursorSemanticParent(CXCursor cursor);
 
     /**
@@ -2771,7 +2727,6 @@ static {
      * For declarations written in the global scope, the lexical parent is
      * the translation unit.
      */
-    [CLink]
     [CLink]
     public static extern CXCursor clang_getCursorLexicalParent(CXCursor cursor);
 
@@ -2819,7 +2774,6 @@ static {
      * array pointed to by \p overridden.
      */
     [CLink]
-    [CLink]
     public static extern void clang_getOverriddenCursors(CXCursor cursor, CXCursor * *overridden, c_uint * num_overridden);
 
     /**
@@ -2827,14 +2781,12 @@ static {
      * clang_getOverriddenCursors().
      */
     [CLink]
-    [CLink]
     public static extern void clang_disposeOverriddenCursors(CXCursor * overridden);
 
     /**
      * Retrieve the file that is included by the given inclusion directive
      * cursor.
      */
-    [CLink]
     [CLink]
     public static extern CXFile clang_getIncludedFile(CXCursor cursor);
 
@@ -2869,7 +2821,6 @@ static {
      * a NULL cursor if no such entity can be found.
      */
     [CLink]
-    [CLink]
     public static extern CXCursor clang_getCursor(CXTranslationUnit u, CXSourceLocation l);
 
     /**
@@ -2882,7 +2833,6 @@ static {
      * The location of a reference is where that reference occurs within the
      * source code.
      */
-    [CLink]
     [CLink]
     public static extern CXSourceLocation clang_getCursorLocation(CXCursor c);
 
@@ -3072,7 +3022,7 @@ static {
     /**
      * Describes the calling convention of a function type
      */
-    [AllowDuplicates] enum CXCallingConv {
+    [AllowDuplicates] enum CXCallingConv : c_int {
         CXCallingConv_Default = 0,
         CXCallingConv_C = 1,
         CXCallingConv_X86StdCall = 2,
@@ -3107,6 +3057,7 @@ static {
      * The type of an element in the abstract syntax tree.
      *
      */
+    [CRepr]
     public struct CXType {
         public CXTypeKind kind;
         public void*[2] data;
@@ -3115,7 +3066,6 @@ static {
     /**
      * Retrieve the type of a CXCursor (if any).
      */
-    [CLink]
     [CLink]
     public static extern CXType clang_getCursorType(CXCursor C);
 
@@ -3126,7 +3076,6 @@ static {
      * If the type is invalid, an empty string is returned.
      */
     [CLink]
-    [CLink]
     public static extern CXString clang_getTypeSpelling(CXType CT);
 
     /**
@@ -3136,7 +3085,6 @@ static {
      * returned.
      */
     [CLink]
-    [CLink]
     public static extern CXType clang_getTypedefDeclUnderlyingType(CXCursor C);
 
     /**
@@ -3145,7 +3093,6 @@ static {
      * If the cursor does not reference an enum declaration, an invalid type is
      * returned.
      */
-    [CLink]
     [CLink]
     public static extern CXType clang_getEnumDeclIntegerType(CXCursor C);
 
@@ -3169,13 +3116,11 @@ static {
      * the cursor must be verified before calling this function.
      */
     [CLink]
-    [CLink]
     public static extern c_ulonglong clang_getEnumConstantDeclc_uintValue(CXCursor C);
 
     /**
      * Returns non-zero if the cursor specifies a Record member that is a bit-field.
      */
-    [CLink]
     [CLink]
     public static extern c_uint clang_Cursor_isBitField(CXCursor C);
 
@@ -3196,7 +3141,6 @@ static {
      * \endcode
      */
     [CLink]
-    [CLink]
     public static extern c_int clang_getFieldDeclBitWidth(CXCursor C);
 
     /**
@@ -3206,7 +3150,6 @@ static {
      * The number of arguments can be determined for calls as well as for
      * declarations of functions or methods. For other cursors -1 is returned.
      */
-    [CLink]
     [CLink]
     public static extern c_int clang_Cursor_getNumArguments(CXCursor C);
 
@@ -3218,7 +3161,6 @@ static {
      * invalid cursor is returned.
      */
     [CLink]
-    [CLink]
     public static extern CXCursor clang_Cursor_getArgument(CXCursor C, c_uint i);
 
     /**
@@ -3227,7 +3169,7 @@ static {
      * See the definition of llvm::clang::TemplateArgument::ArgKind for full
      * element descriptions.
      */
-    public enum CXTemplateArgumentKind {
+    public enum CXTemplateArgumentKind : c_int {
         CXTemplateArgumentKind_Null,
         CXTemplateArgumentKind_Type,
         CXTemplateArgumentKind_Declaration,
@@ -3259,7 +3201,6 @@ static {
      * The value 3 would be returned from this call.
      */
     [CLink]
-    [CLink]
     public static extern c_int clang_Cursor_getNumTemplateArguments(CXCursor C);
 
     /**
@@ -3279,7 +3220,6 @@ static {
      * For I = 0, 1, and 2, Type, Integral, and Integral will be returned,
      * respectively.
      */
-    [CLink]
     [CLink]
     public static extern CXTemplateArgumentKind clang_Cursor_getTemplateArgumentKind(CXCursor C, c_uint I);
 
@@ -3302,7 +3242,6 @@ static {
      * Invalid types will be returned for I == 1 or 2.
      */
     [CLink]
-    [CLink]
     public static extern CXType clang_Cursor_getTemplateArgumentType(CXCursor C, c_uint I);
 
     /**
@@ -3323,7 +3262,6 @@ static {
      * If called with I = 1 or 2, -7 or true will be returned, respectively.
      * For I == 0, this function's behavior is undefined.
      */
-    [CLink]
     [CLink]
     public static extern c_longlong clang_Cursor_getTemplateArgumentValue(CXCursor C, c_uint I);
 
@@ -3346,7 +3284,6 @@ static {
      * For I == 0, this function's behavior is undefined.
      */
     [CLink]
-    [CLink]
     public static extern c_ulonglong clang_Cursor_getTemplateArgumentc_uintValue(CXCursor C, c_uint I);
 
     /**
@@ -3355,7 +3292,6 @@ static {
      * \returns non-zero if the CXTypes represent the same type and
      *          zero otherwise.
      */
-    [CLink]
     [CLink]
     public static extern c_uint clang_equalTypes(CXType A, CXType B);
 
@@ -3368,7 +3304,6 @@ static {
      * for 'int', the canonical type for 'T' would be 'int'.
      */
     [CLink]
-    [CLink]
     public static extern CXType clang_getCanonicalType(CXType T);
 
     /**
@@ -3377,14 +3312,12 @@ static {
      * different level.
      */
     [CLink]
-    [CLink]
     public static extern c_uint clang_isConstQualifiedType(CXType T);
 
     /**
      * Determine whether a  CXCursor that is a macro, is
      * function like.
      */
-    [CLink]
     [CLink]
     public static extern c_uint clang_Cursor_isMacroFunctionLike(CXCursor C);
 
@@ -3393,14 +3326,12 @@ static {
      * builtin one.
      */
     [CLink]
-    [CLink]
     public static extern c_uint clang_Cursor_isMacroBuiltin(CXCursor C);
 
     /**
      * Determine whether a  CXCursor that is a function declaration, is an
      * inline declaration.
      */
-    [CLink]
     [CLink]
     public static extern c_uint clang_Cursor_isFunctionInlined(CXCursor C);
 
@@ -3410,7 +3341,6 @@ static {
      * a different level.
      */
     [CLink]
-    [CLink]
     public static extern c_uint clang_isVolatileQualifiedType(CXType T);
 
     /**
@@ -3419,13 +3349,11 @@ static {
      * different level.
      */
     [CLink]
-    [CLink]
     public static extern c_uint clang_isRestrictQualifiedType(CXType T);
 
     /**
      * Returns the address space of the given type.
      */
-    [CLink]
     [CLink]
     public static extern c_uint clang_getAddressSpace(CXType T);
 
@@ -3433,13 +3361,11 @@ static {
      * Returns the typedef name of the given type.
      */
     [CLink]
-    [CLink]
     public static extern CXString clang_getTypedefName(CXType CT);
 
     /**
      * For pointer types, returns the type of the pointee.
      */
-    [CLink]
     [CLink]
     public static extern CXType clang_getPointeeType(CXType T);
 
@@ -3479,7 +3405,6 @@ static {
      * will return \c false for all of the above calls.
      */
     [CLink]
-    [CLink]
     public static extern CXType clang_getUnqualifiedType(CXType CT);
 
     /**
@@ -3491,7 +3416,6 @@ static {
      * A type that has kind \c CXType_LValueReference or
      * \c CXType_RValueReference is a reference type.
      */
-    [CLink]
     [CLink]
     public static extern CXType clang_getNonReferenceType(CXType CT);
 
@@ -3688,7 +3612,7 @@ static {
     [CLink]
     public static extern c_uint clang_Type_isTransparentTagTypedef(CXType T);
 
-    enum CXTypeNullabilityKind {
+    enum CXTypeNullabilityKind  : c_int {
         /**
          * Values of this type can never be null.
          */
@@ -3733,7 +3657,7 @@ static {
      * A value of this enumeration type can be returned if the target type is not
      * a valid argument to sizeof, alignof or offsetof.
      */
-    enum CXTypeLayoutError {
+    enum CXTypeLayoutError : c_int {
         /**
          * Type is of kind CXType_Invalid.
          */
@@ -3865,7 +3789,7 @@ static {
     [CLink]
     public static extern c_uint clang_Cursor_isInlineNamespace(CXCursor C);
 
-    enum CXRefQualifierKind {
+    enum CXRefQualifierKind : c_int {
         /** No ref-qualifier was provided. */
         CXRefQualifier_None = 0,
         /** An lvalue ref-qualifier was provided (\c &). */
@@ -3929,7 +3853,7 @@ static {
      * Represents the storage classes as declared in the source. CX_SC_Invalid
      * was added for the case that the passed cursor in not a declaration.
      */
-    enum CX_StorageClass { CX_SC_Invalid, CX_SC_None, CX_SC_Extern, CX_SC_Static, CX_SC_PrivateExtern, CX_SC_OpenCLWorkGroupLocal, CX_SC_Auto, CX_SC_Register }
+    enum CX_StorageClass : c_int { CX_SC_Invalid, CX_SC_None, CX_SC_Extern, CX_SC_Static, CX_SC_PrivateExtern, CX_SC_OpenCLWorkGroupLocal, CX_SC_Auto, CX_SC_Register }
     ;
 
     /**
@@ -4008,7 +3932,7 @@ static {
      * A value of this enumeration type should be returned by each
      * \c CXCursorVisitor to indicate how clang_visitChildren() proceed.
      */
-    enum CXChildVisitResult {
+    enum CXChildVisitResult : c_int {
         /**
          * Terminates the cursor traversal.
          */
@@ -4038,7 +3962,6 @@ static {
      * The visitor should return one of the \c CXChildVisitResult values
      * to direct clang_visitCursorChildren().
      */
-	public static ;
 
     /**
      * Visit the children of a particular cursor.
@@ -4179,7 +4102,7 @@ static {
      *
      * See \c clang::PrintingPolicy for more information.
      */
-    [AllowDuplicates] enum CXPrintingPolicyProperty {
+    [AllowDuplicates] enum CXPrintingPolicyProperty : c_int {
         CXPrintingPolicy_Indentation,
         CXPrintingPolicy_SuppressSpecifiers,
         CXPrintingPolicy_SuppressTagKeyword,
@@ -4378,7 +4301,7 @@ static {
     /**
      * Property attributes for a \c CXCursor_ObjCPropertyDecl.
      */
-    enum CXObjCPropertyAttrKind { CXObjCPropertyAttr_noattr = 0x00, CXObjCPropertyAttr_readonly = 0x01, CXObjCPropertyAttr_getter = 0x02, CXObjCPropertyAttr_assign = 0x04, CXObjCPropertyAttr_readwrite = 0x08, CXObjCPropertyAttr_retain = 0x10, CXObjCPropertyAttr_copy = 0x20, CXObjCPropertyAttr_nonatomic = 0x40, CXObjCPropertyAttr_setter = 0x80, CXObjCPropertyAttr_atomic = 0x100, CXObjCPropertyAttr_weak = 0x200, CXObjCPropertyAttr_strong = 0x400, CXObjCPropertyAttr_unsafe_unretained = 0x800, CXObjCPropertyAttr_class = 0x1000 }
+    enum CXObjCPropertyAttrKind : c_int { CXObjCPropertyAttr_noattr = 0x00, CXObjCPropertyAttr_readonly = 0x01, CXObjCPropertyAttr_getter = 0x02, CXObjCPropertyAttr_assign = 0x04, CXObjCPropertyAttr_readwrite = 0x08, CXObjCPropertyAttr_retain = 0x10, CXObjCPropertyAttr_copy = 0x20, CXObjCPropertyAttr_nonatomic = 0x40, CXObjCPropertyAttr_setter = 0x80, CXObjCPropertyAttr_atomic = 0x100, CXObjCPropertyAttr_weak = 0x200, CXObjCPropertyAttr_strong = 0x400, CXObjCPropertyAttr_unsafe_unretained = 0x800, CXObjCPropertyAttr_class = 0x1000 }
     ;
 
     /**
@@ -4409,7 +4332,7 @@ static {
      * 'Qualifiers' written next to the return and parameter types in
      * Objective-C method declarations.
      */
-    enum CXObjCDeclQualifierKind { CXObjCDeclQualifier_None = 0x0, CXObjCDeclQualifier_In = 0x1, CXObjCDeclQualifier_Inout = 0x2, CXObjCDeclQualifier_Out = 0x4, CXObjCDeclQualifier_Bycopy = 0x8, CXObjCDeclQualifier_Byref = 0x10, CXObjCDeclQualifier_Oneway = 0x20 }
+    enum CXObjCDeclQualifierKind : c_int { CXObjCDeclQualifier_None = 0x0, CXObjCDeclQualifier_In = 0x1, CXObjCDeclQualifier_Inout = 0x2, CXObjCDeclQualifier_Out = 0x4, CXObjCDeclQualifier_Bycopy = 0x8, CXObjCDeclQualifier_Byref = 0x10, CXObjCDeclQualifier_Oneway = 0x20 }
     ;
 
     /**
@@ -4483,7 +4406,7 @@ static {
      *
      * @{
      */
-
+	[CRepr]
 	struct CXStringSet{
 	  CXString *Strings;
 	  c_uint Count;
@@ -4864,7 +4787,7 @@ static {
     [CLink]
     public static extern CXSourceRange clang_getCursorReferenceNameRange(CXCursor C, c_uint NameFlags, c_uint PieceIndex);
 
-    enum CXNameRefFlags {
+    enum CXNameRefFlags : c_int {
         /**
          * Include the nested-name-specifier, e.g. Foo:: in x.Foo::y, in the
          * range.
@@ -4908,7 +4831,7 @@ static {
     /**
      * Describes a kind of token.
      */
-    enum CXTokenKind {
+    enum CXTokenKind : c_int {
         /**
          * A token that contains some kind of punctuation.
          */
@@ -4939,6 +4862,7 @@ static {
     /**
      * Describes a single preprocessing token.
      */
+    [CRepr]
     public struct CXToken {
         c_uint[4] int_data;
         void* ptr_data;
@@ -5101,6 +5025,7 @@ static {
     /**
      * A single result of code completion.
      */
+     [CRepr]
     public struct CXCompletionResult {
         /**
          * The kind of entity that this completion refers to.
@@ -5128,7 +5053,7 @@ static {
      * either a piece of text with a specific "kind" that describes how that text
      * should be interpreted by the client or is another completion string.
      */
-    enum CXCompletionChunkKind {
+    enum CXCompletionChunkKind : c_int {
         /**
          * A code-completion string that describes "optional" text that
          * could be a part of the template (but is not required).
@@ -5435,6 +5360,7 @@ static {
      * produced by \c clang_codeCompleteAt(). Its contents must be freed by
      * \c clang_disposeCodeCompleteResults.
      */
+     [CRepr]
     public struct CXCodeCompleteResults {
         /**
          * The code-completion results.
@@ -5517,7 +5443,7 @@ static {
      * The enumerators in this enumeration can be bitwise-OR'd together to
      * provide multiple options to \c clang_codeCompleteAt().
      */
-    enum CXCodeComplete_Flags {
+    enum CXCodeComplete_Flags : c_int {
         /**
          * Whether to include macros within the set of code
          * completions returned.
@@ -5557,7 +5483,7 @@ static {
      * The enumerators in this enumeration may be bitwise-OR'd together if multiple
      * contexts are occurring simultaneously.
      */
-    enum CXCompletionContext {
+    enum CXCompletionContext : c_int {
         /**
          * The context for completions is unexposed, as only Clang results
          * should be included. (This is equivalent to having no context bits set.)
@@ -5906,7 +5832,7 @@ static {
     [CLink]
     public static extern void clang_getInclusions(CXTranslationUnit tu, function void(CXFile included_file, CXSourceLocation * inclusion_stack, c_uint include_len, CXClientData client_data) visitor, CXClientData client_data);
 
-    enum CXEvalResultKind {
+    enum CXEvalResultKind : c_int {
         CXEval_Int = 1,
         CXEval_Float = 2,
         CXEval_ObjCStrLiteral = 3,
@@ -6059,15 +5985,15 @@ static {
      * @{
      */
 
-    enum CXVisitorResult { CXVisit_Break, CXVisit_Continue }
+    enum CXVisitorResult : c_int { CXVisit_Break, CXVisit_Continue }
     ;
-
+	[CRepr]
     public struct CXCursorAndRangeVisitor {
         void* context;
         function CXVisitorResult(void* context, CXCursor c, CXSourceRange r) visit;
     };
 
-    enum CXResult {
+    enum CXResult : c_int {
         /**
          * Function returned successfully.
          */
@@ -6149,6 +6075,7 @@ static {
     /**
      * Source location passed to index callbacks.
      */
+     [CRepr]
     public struct CXIdxLoc {
         void*[2] ptr_data;
         c_uint int_data;
@@ -6157,6 +6084,7 @@ static {
     /**
      * Data for ppIncludedFile callback.
      */
+     [CRepr]
     public struct CXIdxIncludedFileInfo {
         /**
          * Location of '#' in the \#include/\#import directive.
@@ -6182,6 +6110,7 @@ static {
     /**
      * Data for IndexerCallbacks#importedASTFile.
      */
+     [CRepr]
     public struct CXIdxImportedASTFileInfo {
         /**
          * Top level AST file containing the imported PCH, module or submodule.
@@ -6202,7 +6131,7 @@ static {
         c_int isImplicit;
     };
 
-    enum CXIdxEntityKind {
+    enum CXIdxEntityKind : c_int {
         CXIdxEntity_Unexposed = 0,
         CXIdxEntity_Typedef = 1,
         CXIdxEntity_Function = 2,
@@ -6239,7 +6168,7 @@ static {
     }
     ;
 
-    enum CXIdxEntityLanguage { CXIdxEntityLang_None = 0, CXIdxEntityLang_C = 1, CXIdxEntityLang_ObjC = 2, CXIdxEntityLang_CXX = 3, CXIdxEntityLang_Swift = 4 }
+    enum CXIdxEntityLanguage : c_int { CXIdxEntityLang_None = 0, CXIdxEntityLang_C = 1, CXIdxEntityLang_ObjC = 2, CXIdxEntityLang_CXX = 3, CXIdxEntityLang_Swift = 4 }
     ;
 
     /**
@@ -6252,18 +6181,20 @@ static {
      * CXIdxEntity_CXXConversionFunction
      * CXIdxEntity_CXXTypeAlias
      */
-    enum CXIdxEntityCXXTemplateKind { CXIdxEntity_NonTemplate = 0, CXIdxEntity_Template = 1, CXIdxEntity_TemplatePartialSpecialization = 2, CXIdxEntity_TemplateSpecialization = 3 }
+    enum CXIdxEntityCXXTemplateKind : c_int { CXIdxEntity_NonTemplate = 0, CXIdxEntity_Template = 1, CXIdxEntity_TemplatePartialSpecialization = 2, CXIdxEntity_TemplateSpecialization = 3 }
     ;
 
-    enum CXIdxAttrKind { CXIdxAttr_Unexposed = 0, CXIdxAttr_IBAction = 1, CXIdxAttr_IBOutlet = 2, CXIdxAttr_IBOutletCollection = 3 }
+    enum CXIdxAttrKind : c_int { CXIdxAttr_Unexposed = 0, CXIdxAttr_IBAction = 1, CXIdxAttr_IBOutlet = 2, CXIdxAttr_IBOutletCollection = 3 }
     ;
 
+	[CRepr]
     public struct CXIdxAttrInfo {
         CXIdxAttrKind kind;
         CXCursor cursor;
         CXIdxLoc loc;
     };
 
+	[CRepr]
     public struct CXIdxEntityInfo {
         CXIdxEntityKind kind;
         CXIdxEntityCXXTemplateKind templateKind;
@@ -6274,9 +6205,10 @@ static {
         CXIdxAttrInfo** attributes;
         c_uint numAttributes;
     };
-
+	[CRepr]
     public struct CXIdxContainerInfo { CXCursor cursor; };
 
+	[CRepr]
     public struct CXIdxIBOutletCollectionAttrInfo {
         CXIdxAttrInfo* attrInfo;
         CXIdxEntityInfo* objcClass;
@@ -6284,8 +6216,9 @@ static {
         CXIdxLoc classLoc;
     };
 
-	enum CXIdxDeclInfoFlags { CXIdxDeclFlag_Skipped = 0x1 };
+	enum CXIdxDeclInfoFlags : c_int { CXIdxDeclFlag_Skipped = 0x1 };
 
+	[CRepr]
     public struct CXIdxDeclInfo {
         CXIdxEntityInfo* entityInfo;
         CXCursor cursor;
@@ -6311,37 +6244,43 @@ static {
         c_uint flags;
     };
 
-    enum CXIdxObjCContainerKind { CXIdxObjCContainer_ForwardRef = 0, CXIdxObjCContainer_Interface = 1, CXIdxObjCContainer_Implementation = 2 }
+    enum CXIdxObjCContainerKind : c_int { CXIdxObjCContainer_ForwardRef = 0, CXIdxObjCContainer_Interface = 1, CXIdxObjCContainer_Implementation = 2 }
     ;
 
+	[CRepr]
     public struct CXIdxObjCContainerDeclInfo {
         CXIdxDeclInfo* declInfo;
         CXIdxObjCContainerKind kind;
     };
 
+	[CRepr]
     public struct CXIdxBaseClassInfo {
         CXIdxEntityInfo* _base;
         CXCursor cursor;
         CXIdxLoc loc;
     };
 
+	[CRepr]
     public struct CXIdxObjCProtocolRefInfo {
         CXIdxEntityInfo* protocol;
         CXCursor cursor;
         CXIdxLoc loc;
     };
 
+	[CRepr]
     public struct CXIdxObjCProtocolRefListInfo {
         CXIdxObjCProtocolRefInfo** protocols;
         c_uint numProtocols;
     };
 
+	[CRepr]
     public struct CXIdxObjCInterfaceDeclInfo {
         CXIdxObjCContainerDeclInfo* containerInfo;
         CXIdxBaseClassInfo* superInfo;
         CXIdxObjCProtocolRefListInfo* protocols;
     };
 
+	[CRepr]
     public struct CXIdxObjCCategoryDeclInfo {
         CXIdxObjCContainerDeclInfo* containerInfo;
         CXIdxEntityInfo* objcClass;
@@ -6350,12 +6289,14 @@ static {
         CXIdxObjCProtocolRefListInfo* protocols;
     };
 
+	[CRepr]
     public struct CXIdxObjCPropertyDeclInfo {
         CXIdxDeclInfo* declInfo;
         CXIdxEntityInfo* getter;
         CXIdxEntityInfo* setter;
     };
 
+	[CRepr]
     public struct CXIdxCXXClassDeclInfo {
         CXIdxDeclInfo* declInfo;
         CXIdxBaseClassInfo** bases;
@@ -6387,12 +6328,13 @@ static {
      * Internal: this currently mirrors low 9 bits of clang::index::SymbolRole with
      * higher bits zeroed. These high bits may be exposed in the future.
      */
-    enum CXSymbolRole { CXSymbolRole_None = 0, CXSymbolRole_Declaration = 1 << 0, CXSymbolRole_Definition = 1 << 1, CXSymbolRole_Reference = 1 << 2, CXSymbolRole_Read = 1 << 3, CXSymbolRole_Write = 1 << 4, CXSymbolRole_Call = 1 << 5, CXSymbolRole_Dynamic = 1 << 6, CXSymbolRole_AddressOf = 1 << 7, CXSymbolRole_Implicit = 1 << 8 }
+    enum CXSymbolRole : c_int { CXSymbolRole_None = 0, CXSymbolRole_Declaration = 1 << 0, CXSymbolRole_Definition = 1 << 1, CXSymbolRole_Reference = 1 << 2, CXSymbolRole_Read = 1 << 3, CXSymbolRole_Write = 1 << 4, CXSymbolRole_Call = 1 << 5, CXSymbolRole_Dynamic = 1 << 6, CXSymbolRole_AddressOf = 1 << 7, CXSymbolRole_Implicit = 1 << 8 }
     ;
 
     /**
      * Data for IndexerCallbacks#indexEntityReference.
      */
+     [CRepr]
     public struct CXIdxEntityRefInfo {
         CXIdxEntityRefKind kind;
         /**
@@ -6430,6 +6372,7 @@ static {
      * A group of callbacks used by #clang_indexSourceFile and
      * #clang_indexTranslationUnit.
      */
+     [CRepr]
     public struct IndexerCallbacks {
         /**
          * Called periodically to check whether indexing should be aborted.
@@ -6545,7 +6488,7 @@ static {
     [CLink]
     public static extern void clang_IndexAction_dispose(CXIndexAction a);
 
-    enum CXIndexOptFlags {
+    enum CXIndexOptFlags : c_int {
         /**
          * Used to indicate that no special indexing options are needed.
          */
@@ -6695,7 +6638,7 @@ static {
     /**
      * Describes the kind of binary operators.
      */
-    enum CXBinaryOperatorKind {
+    enum CXBinaryOperatorKind : c_int {
         /** This value describes cursors which are not binary operators. */
         CXBinaryOperator_Invalid,
         /** C++ Pointer - to - member operator. */
@@ -6784,7 +6727,7 @@ static {
     /**
      * Describes the kind of unary operators.
      */
-    enum CXUnaryOperatorKind {
+    enum CXUnaryOperatorKind : c_int {
         /** This value describes cursors which are not unary operators. */
         CXUnaryOperator_Invalid,
         /** Postfix increment operator. */
